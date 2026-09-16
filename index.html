@@ -1,0 +1,387 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Grade 7 Confidence Unlock</title>
+<style>
+  :root{
+    --bg:#0f172a; --panel:#ffffff; --ink:#172033; --muted:#667085;
+    --accent:#315efb; --ok:#1f9d67; --bad:#d14343; --soft:#eef2f7;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;font-family:Arial,Helvetica,sans-serif;background:linear-gradient(135deg,#111827,#1e293b);color:white}
+  .wrap{max-width:1100px;margin:0 auto;padding:28px}
+  .screen{min-height:88vh;display:flex;align-items:center;justify-content:center}
+  .card{width:100%;background:var(--panel);color:var(--ink);border-radius:24px;padding:34px;box-shadow:0 18px 50px rgba(0,0,0,.28)}
+  h1,h2,h3{margin:0 0 16px}
+  h1{font-size:46px;text-align:center}
+  h2{font-size:34px}
+  .sub{color:var(--muted);font-size:20px;text-align:center;margin-bottom:26px}
+  .facts{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:18px 0 28px}
+  .fact{background:var(--soft);padding:16px 18px;border-radius:14px;font-size:18px}
+  .pwrow{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin:24px 0}
+  input[type=password], input[type=text]{
+    width:min(520px,100%);font-size:28px;padding:16px 18px;border-radius:14px;border:2px solid #cfd7e3;outline:none;
+  }
+  input:focus{border-color:var(--accent)}
+  .btns{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-top:16px}
+  button{
+    border:0;border-radius:14px;padding:14px 22px;font-size:18px;font-weight:700;cursor:pointer
+  }
+  .primary{background:var(--accent);color:white}
+  .secondary{background:#e8edf5;color:var(--ink)}
+  .success{background:var(--ok);color:white}
+  .danger{background:var(--bad);color:white}
+  .msg{min-height:32px;text-align:center;font-size:19px;font-weight:700;margin-top:14px}
+  .clues{display:none;margin:22px auto 0;max-width:700px;background:#fff7dc;border-radius:14px;padding:18px;color:#5c4a00}
+  .clues li{margin:8px 0;font-size:17px}
+  .hidden{display:none!important}
+  .unlock{
+    text-align:center;padding:40px 10px
+  }
+  .unlock .big{font-size:54px;font-weight:800;color:var(--ok)}
+  .levels{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:24px}
+  .level{
+    background:#f7f9fc;border:2px solid #e1e6ef;border-radius:18px;padding:26px;cursor:pointer;min-height:170px;
+    display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;
+  }
+  .level:hover{border-color:var(--accent)}
+  .level.opened{
+    background:#fde8e8;
+    border-color:#d14343;
+    color:#8b1f1f;
+  }
+  .level.opened b,.level.opened h3{color:#b42318}
+  .level.opened::after{
+    content:"OPENED";
+    display:block;
+    margin-top:10px;
+    font-size:12px;
+    font-weight:800;
+    letter-spacing:1px;
+  }
+  .level b{display:block;color:var(--accent);margin-bottom:8px;font-size:18px;letter-spacing:1px}
+  .level h3{font-size:52px;margin:0;color:var(--ink)}
+  .challenge{font-size:30px;line-height:1.3;text-align:center;padding:24px 8px}
+  .hint{color:var(--muted);font-size:17px;text-align:center}
+  .topbar{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:20px}
+  .badge{background:#eef2ff;color:#3046b3;padding:8px 12px;border-radius:999px;font-weight:700}
+  @media (max-width:800px){
+    .facts,.levels{grid-template-columns:1fr}
+    h1{font-size:36px}
+    h2{font-size:28px}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <section id="lockScreen" class="screen">
+    <div class="card">
+      <h1>🔐 LOCKED CLASS</h1>
+      <div class="sub">Crack Miss Tatiana’s password to unlock the Confidence Challenge.</div>
+
+      <div class="facts">
+        <div class="fact">1. My name is Tatiana.</div>
+        <div class="fact">2. We are 4 girls at home.</div>
+        <div class="fact">3. I love McDonald’s.</div>
+        <div class="fact">4. I enjoy challenges.</div>
+        <div class="fact">5. I don’t like giving up easily.</div>
+        <div class="fact">6. I can feel nervous before trying something new.</div>
+        <div class="fact">7. Even when I am scared, I still try.</div>
+        <div class="fact">8. I feel proud when I do something I was nervous about.</div>
+        <div class="fact">9. I believe courage means trying even when you are afraid.</div>
+      </div>
+
+      <div style="text-align:center;font-size:18px;color:#667085;margin-bottom:8px">
+        Not every fact is used in the password.
+      </div>
+
+      <div class="pwrow">
+        <input id="passwordInput" type="text" autocomplete="off" placeholder="Enter password">
+      </div>
+
+      <div class="btns">
+        <button class="primary" id="checkBtn">CHECK PASSWORD</button>
+        <button class="secondary" id="clueBtn">SHOW CLUES</button>
+      </div>
+      <div id="msg" class="msg"></div>
+
+      <div id="clues" class="clues">
+        <b>Clues</b>
+        <ul>
+          <li>It starts with something related to my name.</li>
+          <li>One letter in my name is replaced by a symbol.</li>
+          <li>Think about the verb <b>to be</b> and how we sometimes shorten it in English.</li>
+          <li>The password describes something about my personality.</li>
+          <li>One letter in that personality word is replaced by a number.</li>
+          <li>One fact about my family can help you guess that number.</li>
+          <li>It uses uppercase and lowercase letters.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section id="unlockScreen" class="screen hidden">
+    <div class="card unlock">
+      <div class="big">✅ ACCESS GRANTED</div>
+      <h2 style="margin-top:16px">T@tsBr4ve</h2>
+      <p style="font-size:22px;color:#667085">“Tat’s Brave”</p>
+      <button class="success" id="startGameBtn">UNLOCK CONFIDENCE CHALLENGE</button>
+    </div>
+  </section>
+
+  <section id="gameScreen" class="screen hidden">
+    <div class="card">
+      <div class="topbar">
+        <div>
+          <div class="badge">GRADE 7 • CONFIDENCE GAME</div>
+          <h2 style="margin-top:12px">Choose any level</h2>
+        </div>
+        <button class="secondary" id="resetBtn">RESET</button>
+      </div>
+
+      <div class="sub" style="text-align:left;margin-bottom:12px">
+        Open the levels in ANY order. Once a level is opened, it turns red. Some levels contain a question; others contain a challenge. PASS is always allowed.
+      </div>
+
+      <div class="levels">
+        <div class="level" data-level="0"><b>LEVEL</b><h3>1</h3></div>
+        <div class="level" data-level="1"><b>LEVEL</b><h3>2</h3></div>
+        <div class="level" data-level="2"><b>LEVEL</b><h3>3</h3></div>
+        <div class="level" data-level="3"><b>LEVEL</b><h3>4</h3></div>
+        <div class="level" data-level="4"><b>LEVEL</b><h3>5</h3></div>
+        <div class="level" data-level="5"><b>LEVEL</b><h3>6</h3></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="challengeScreen" class="screen hidden">
+    <div class="card">
+      <div class="topbar">
+        <span id="levelBadge" class="badge"></span>
+        <button class="secondary" id="backBtn">← BACK TO LEVELS</button>
+      </div>
+      <div id="challengeText" class="challenge"></div>
+      <div id="challengeHint" class="hint"></div>
+      <div class="btns" style="margin-top:30px">
+        <button class="secondary" id="passBtn">PASS</button>
+        <button class="primary" id="doneBtn">DONE</button>
+      </div>
+    </div>
+  </section>
+
+  <section id="finishScreen" class="screen hidden">
+    <div class="card unlock">
+      <div class="big">🔓 CONFIDENCE UNLOCKED</div>
+      <h2 style="margin-top:22px">You did not need to be fearless.</h2>
+      <p style="font-size:24px">You only needed to be willing to try.</p>
+      <p style="font-size:21px;color:#667085;margin-top:28px">
+        Confidence is not “I never make mistakes.”<br>
+        Confidence is “I’m not sure… but I’ll try.”
+      </p>
+      <button class="primary" id="restartBtn">PLAY AGAIN</button>
+    </div>
+  </section>
+
+</div>
+
+<script>
+(() => {
+  const PASSWORD = "T@tsBr4ve";
+  const screens = ["lockScreen","unlockScreen","gameScreen","challengeScreen","finishScreen"];
+  const qs = id => document.getElementById(id);
+  const show = id => screens.forEach(s => qs(s).classList.toggle("hidden", s !== id));
+
+  const input = qs("passwordInput");
+  const msg = qs("msg");
+  const clues = qs("clues");
+
+  function checkPassword(){
+    if(input.value === PASSWORD){
+      msg.textContent = "Correct!";
+      msg.style.color = "#1f9d67";
+      setTimeout(() => show("unlockScreen"), 350);
+    } else {
+      msg.textContent = "Not yet — try again.";
+      msg.style.color = "#d14343";
+      input.focus();
+      input.select();
+    }
+  }
+
+  qs("checkBtn").addEventListener("click", checkPassword);
+  input.addEventListener("keydown", e => {
+    if(e.key === "Enter") checkPassword();
+  });
+  qs("clueBtn").addEventListener("click", () => {
+    clues.style.display = clues.style.display === "block" ? "none" : "block";
+  });
+  qs("startGameBtn").addEventListener("click", () => show("gameScreen"));
+
+  const challengeBanks = [
+    [
+      {
+        badge:"LEVEL 1",
+        q:"What is one thing that makes you feel nervous when you do it in front of other people?",
+        hint:"For example: answering in class, presenting, singing, asking a question, or trying something new."
+      },
+      {
+        badge:"LEVEL 1",
+        q:"What is one thing you would like to feel more confident doing this year?",
+        hint:"Choose something real, but keep it comfortable to share."
+      },
+      {
+        badge:"LEVEL 1",
+        q:"When you start to feel nervous, what is one thing that helps you feel calmer?",
+        hint:"There is no right answer. Think about what works for you."
+      }
+    ],
+    [
+      {
+        badge:"LEVEL 2 • CHALLENGE",
+        q:"Stand up, look at the class, and say one sentence about yourself in a clear, confident voice.",
+        hint:"It can be simple: something you like, something you enjoy, or something you are proud of."
+      },
+      {
+        badge:"LEVEL 2 • CHALLENGE",
+        q:"Say your name and one thing you enjoy doing. This time, do it without looking down.",
+        hint:"Take your time. Speak slowly and clearly."
+      },
+      {
+        badge:"LEVEL 2",
+        q:"Which is harder for you: speaking in front of people or making a mistake in front of people? Why?",
+        hint:"Give one reason for your answer."
+      }
+    ],
+    [
+      {
+        badge:"LEVEL 3",
+        q:"What is one fear that sometimes stops you from trying something new?",
+        hint:"You do not need to share anything private."
+      },
+      {
+        badge:"LEVEL 3",
+        q:"What is something you would try if you knew nobody would laugh at you or judge you?",
+        hint:"Choose something you genuinely wish you were brave enough to try."
+      },
+      {
+        badge:"LEVEL 3 • CHALLENGE",
+        q:"Complete this sentence out loud: “I feel nervous when ________, but I can still try.”",
+        hint:"The goal is not to sound perfect. The goal is to say it."
+      }
+    ],
+    [
+      {
+        badge:"LEVEL 4",
+        q:"Tell us about a time when you felt nervous or scared but did it anyway.",
+        hint:"What helped you take the first step?"
+      },
+      {
+        badge:"LEVEL 4 • CHALLENGE",
+        q:"Choose one: “I can’t do it” or “I can’t do it yet.” Explain why one sentence is stronger.",
+        hint:"Think about how the word “yet” changes the meaning."
+      },
+      {
+        badge:"LEVEL 4",
+        q:"What is one difficult thing that became easier for you because you kept practising?",
+        hint:"It can be related to school, sports, hobbies, or everyday life."
+      }
+    ],
+    [
+      {
+        badge:"LEVEL 5",
+        q:"Can you share something that felt embarrassing when it happened but makes you laugh now?",
+        hint:"Keep it school-appropriate, and share only what you are comfortable sharing."
+      },
+      {
+        badge:"LEVEL 5",
+        q:"Tell us about a mistake that taught you something useful.",
+        hint:"Focus more on what you learned than on the mistake itself."
+      },
+      {
+        badge:"LEVEL 5 • CHALLENGE",
+        q:"Imagine a classmate is too afraid to answer because they might be wrong. What would you say to encourage them?",
+        hint:"Give them one short sentence that would actually help."
+      }
+    ],
+    [
+      {
+        badge:"LEVEL 6",
+        q:"What advice would you give to a younger student who is afraid of what other people think?",
+        hint:"Give one piece of advice you truly believe."
+      },
+      {
+        badge:"LEVEL 6 • CHALLENGE",
+        q:"Complete this sentence and say it confidently: “I am not sure I can ________ yet, but I am willing to try.”",
+        hint:"Choose something real that you would like to improve."
+      },
+      {
+        badge:"LEVEL 6 • CHALLENGE",
+        q:"In 20 seconds, convince the class that making mistakes can help us learn.",
+        hint:"Give at least one reason or example."
+      }
+    ]
+  ];
+
+  let selectedChallenges = [];
+  let openedLevels = new Set();
+
+  function chooseQuestions(){
+    selectedChallenges = challengeBanks.map(bank => bank[Math.floor(Math.random()*bank.length)]);
+  }
+
+  function refreshLevelCards(){
+    document.querySelectorAll(".level").forEach((el, i) => {
+      el.classList.toggle("opened", openedLevels.has(i));
+    });
+  }
+
+  function allLevelsOpened(){
+    return openedLevels.size === challengeBanks.length;
+  }
+
+  chooseQuestions();
+
+  document.querySelectorAll(".level").forEach(el => {
+    el.addEventListener("click", () => {
+      const i = Number(el.dataset.level);
+      const c = selectedChallenges[i];
+
+      openedLevels.add(i);
+      refreshLevelCards();
+
+      qs("levelBadge").textContent = c.badge;
+      qs("challengeText").textContent = c.q;
+      qs("challengeHint").textContent = c.hint;
+      qs("challengeScreen").dataset.current = i;
+      show("challengeScreen");
+    });
+  });
+
+  function finishCurrentChallenge(){
+    if(allLevelsOpened()) show("finishScreen");
+    else show("gameScreen");
+  }
+
+  qs("backBtn").addEventListener("click", () => show("gameScreen"));
+  qs("passBtn").addEventListener("click", finishCurrentChallenge);
+  qs("doneBtn").addEventListener("click", finishCurrentChallenge);
+
+  function resetAll(){
+    input.value = "";
+    msg.textContent = "";
+    clues.style.display = "none";
+    openedLevels = new Set();
+    chooseQuestions();
+    refreshLevelCards();
+    show("lockScreen");
+    input.focus();
+  }
+  qs("resetBtn").addEventListener("click", resetAll);
+  qs("restartBtn").addEventListener("click", resetAll);
+})();
+</script>
+</body>
+</html>
